@@ -2,6 +2,13 @@
 
 @section('content')
 <div class="container">
+    
+    @if(session('success'))
+        <div class="alert alert-success">
+            {{ session('success') }}
+        </div>
+    @endif
+
     <h2>タスク一覧</h2>
 
     <a href="{{ route('tasks.create') }}" class="btn btn-primary">タスクを追加</a>

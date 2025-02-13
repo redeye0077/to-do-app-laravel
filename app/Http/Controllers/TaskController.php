@@ -22,7 +22,7 @@ class TaskController extends Controller
      */
     public function create()
     {
-        //
+        return view('tasks.create');
     }
 
     /**
@@ -30,7 +30,20 @@ class TaskController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'title' => 'required|string|max:255',
+            'description' => 'required|string',
+            'completed' => 'required|boolean',
+        ]);
+
+        Task::create([
+            'title' => $request->title,
+            'description' => $request->description,
+            'completed' => $request->completed,
+            'user_id' => Auth::user()->id,
+        ]);
+        
+        return redirect()->route('tasks.index')->with('success', 'タスクが追加されました');
     }
 
     /**
