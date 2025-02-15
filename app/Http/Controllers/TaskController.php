@@ -57,17 +57,32 @@ class TaskController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
-    {
-        //
+    public function edit(Task $task)
+    {   
+        // タスクの所有者でない場合は403エラーを返す
+        if ($task->user_id !== Auth::user()->id) {
+            abort(403, 'このタスクは編集できません');
+        }
+        return view('tasks.edit', compact('task'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, Task $task)
     {
-        //
+        $request->validate([
+            'title' => 'required|string|max:255',
+            'description' => 'required|string',
+            'completed' => 'required|boolean',
+        ]);
+        
+        $task->update([
+            'title' => $request->title,
+            'description' => $request->description,
+            'completed' => $request->completed,
+        ]);
+        return redirect()->route('tasks.index')->with('success', 'タスクが更新されました');
     }
 
     /**
