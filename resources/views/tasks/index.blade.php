@@ -26,7 +26,7 @@
                     <form action="{{ route('tasks.destroy', $task->id) }}" method="POST" style="display:inline;">
                         @csrf
                         @method('DELETE')
-                        <button type="submit" class="btn btn-danger btn-sm">削除</button>
+                        <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('本当に削除しますか？')">削除</button>
                     </form>
                 </li>
             @endforeach

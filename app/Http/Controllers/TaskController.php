@@ -88,8 +88,13 @@ class TaskController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(Task $task)
     {
-        //
+        // タスクの所有者でない場合は403エラーを返す
+        if ($task->user_id !== Auth::user()->id) {
+            abort(403, 'このタスクは編集できません');
+        }
+        $task->delete();
+        return redirect()->route('tasks.index')->with('success', 'タスクが削除されました');
     }
 }
